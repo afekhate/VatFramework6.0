@@ -1,0 +1,81 @@
+﻿
+
+    <script>
+
+        function GetAddressLongtitudeAndLatitude() {
+
+            let StreetAddress = document.getElementById("IncidentLocation").value;
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetAddressLongtitudeAndLatitude", "TwitterDataBank", new { area = "Admin" })",
+                datatype: "Json",
+                data: { StreetAddress: StreetAddress },
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+
+                success: function (data) {
+
+                    document.getElementById("IncidentLocation").value = "";
+                    document.getElementById("Latitude").value = "";
+                    document.getElementById("Longtitude").value = "";
+
+
+                    document.getElementById("IncidentLocation").value = data.address;
+                    document.getElementById("Latitude").value = data.latitude;
+                    document.getElementById("Longtitude").value = data.longtitude;
+
+
+                    var lat = data.latitude;
+                    var lng = data.longtitude;
+
+                    initialize(lng, lat)
+                },
+                error: function (request, status, error) {
+                    var x = document.getElementById("HideMap");
+                    x.style.display === "none";
+                }
+            });
+        }
+
+        function initialize(lng, lat) {
+
+            var x = document.getElementById("HideMap");
+            x.style.display = "block";
+
+            //http://jsfiddle.net/adhikariaman01/ocjenyc8/1/
+            var myLatlng = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+
+            var myOptions = {
+                zoom: 20,
+                center: myLatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+            var marker = new google.maps.Marker({
+                draggable: true,
+                position: myLatlng,
+                map: map,
+                title: "Incident location"
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementById("Latitude").value = event.latLng.lat();
+                document.getElementById("Longtitude").value = event.latLng.lng();
+            });
+
+            var x = document.getElementById("HideMap");
+            x.style.display = "block";
+        }
+        google.maps.event.addDomListener(window, "load", initialize());
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMt08RbHZZELb361SmJCo1JTOicsAuXmI&callback=initMap"></script>
+
+</head>
+<body>
+
+</body>
+</html>

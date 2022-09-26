@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Http
+@model VatFramework.Models.DataObjects.ReportDTO.DashboardModel
+@using  System.IO
+@inject IHttpContextAccessor HttpContextAccessor
+@using VatFramework.Utilities.ExceptionUtility
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+    </div>
+</div>
+
+
+@if (ViewBag.Role == ResponseErrorMessageUtility.MiniAdmin)
+{
+    @Html.Partial("MiniPlantDashboard", Model)
+}
+else if (ViewBag.Role == ResponseErrorMessageUtility.CentralAdmin)
+{
+    @Html.Partial("CentralDashboard", Model)
+}
+else if (ViewBag.Role == ResponseErrorMessageUtility.Plant_Blanking)
+{
+    @Html.Partial("BlankingDashboard", Model)
+}
+else if (ViewBag.Role == ResponseErrorMessageUtility.Screen_Printing)
+{
+    @Html.Partial("ScreenPrintingDashboard", Model)
+}
+else if (ViewBag.Role == ResponseErrorMessageUtility.EMBOSSING_Role)
+{
+    @Html.Partial("EmbossingDashboard", Model)
+}
+else if (ViewBag.Role == ResponseErrorMessageUtility.PlantAdmin)
+{
+    @Html.Partial("PlantDashboard", Model)
+}
+else
+{
+
+}

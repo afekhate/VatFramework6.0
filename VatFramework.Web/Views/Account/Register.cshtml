@@ -1,0 +1,112 @@
+﻿@model VatFramework.Models.DataObjects.Account.AdminUserSettingViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    //Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    //Layout = "~/Views/Shared/_landing.cshtml";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<!-- PAGE -->
+<div class="page">
+    <div class="">
+
+        <!-- CONTAINER OPEN -->
+        <div class="col col-login mx-auto mt-7">
+            <div class="text-center">
+                @*<img src="~/frscassets/images/logo2.png" />*@
+             
+            </div>
+        </div>
+
+        <div class="container-login100">
+            <div class="wrap-login100 p-6">
+                <form class="login100-form validate-form" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" novalidate>
+
+                    <span class="login100-form-title pb-5">
+                        Register
+                    </span>
+
+
+                    <div class="wrap-input100 validate-input input-group" data-bs-validate="FirstName is required: ex@abc.xyz">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-lamp text-muted" aria-hidden="true"></i>
+                        </a>
+
+                        <input type="text" asp-for="FirstName" class="input100 border-start-0 form-control ms-0" id="FirstName" name="FirstName" placeholder="FirstName">
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                    </div>
+                    <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-home text-muted" aria-hidden="true"></i>
+                        </a>
+
+
+                         <input type="text" asp-for="LastName" class="input100 border-start-0 form-control ms-0" id="LastName" name="LastName" placeholder="LastName">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+
+                    </div>
+
+                     <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-key text-muted" aria-hidden="true"></i>
+                        </a>
+
+
+                         <input type="text" asp-for="UserName" class="input100 border-start-0 form-control ms-0" id="UserName" name="UserName" placeholder="UserName">
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+
+                    </div>
+
+
+
+
+                    <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-email text-muted" aria-hidden="true"></i>
+                        </a>
+
+
+                         <input type="email" asp-for="Email" class="input100 border-start-0 form-control ms-0" id="Email" name="Email" placeholder="Email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+
+                    </div>
+
+                     <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-phone text-muted" aria-hidden="true"></i>
+                        </a>
+
+
+                         <input type="number" asp-for="MobileNumber" class="input100 border-start-0 form-control ms-0" id="MobileNumber" name="MobileNumber" placeholder="MobileNumber">
+                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                        <input type="hidden" asp-for="RoleId" name="RoleId" value="@ViewBag.RoleId" />
+                       
+
+                    </div>
+
+
+                   
+                    <div class="container-login100-form-btn">
+                        @*<a href="#" class="login100-form-btn btn-primary">
+                        Login
+                    </a>*@
+
+                        <button type="submit" class="login100-form-btn btn-primary">Sign Up</button>
+                    </div>
+
+
+
+
+
+
+                </form>
+            </div>
+        </div>
+        <!-- CONTAINER CLOSED -->
+    </div>
+</div>
+<!-- End PAGE -->
+
+

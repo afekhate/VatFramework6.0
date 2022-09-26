@@ -1,0 +1,261 @@
+﻿
+@model List<VatFramework.Models.DataObjects.Account.AdminUserSettingViewModel>
+
+@{
+
+    ViewData["Title"] = ViewBag.ProjectTitle + "::  " + "User Management";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+
+
+<style>
+
+    .hover:hover {
+        opacity: 0.9;
+    }
+
+
+
+    .modal-content {
+        max-height: none;
+        width: 600px;
+    }
+</style>
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <h1 class="page-title">User Management</h1>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User Management</li>
+        </ol>
+    </div>
+
+</div>
+<div class="row row-sm">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="row">
+
+
+                <div class="card-header">
+
+                    <h3 class="card-title">User Management</h3>
+                    <div class="col-md-10 text-end">
+                        
+                        <button onclick="Create()" role="button" data-toggle="modal" data-target="#centralModalInfo" class="btn btn-primary float-end">Add New</button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="file-datatable" class="table table-bordered text-nowrap key-buttons border-bottom">
+                            <thead>
+
+                                <tr>
+
+
+                                    <th class="border-bottom-0">SN</th>
+                                    <th class="border-bottom-0">First Name</th>
+                                    <th class="border-bottom-0">Middle Name</th>
+                                    <th class="border-bottom-0">Last Name</th>
+                                    <th class="border-bottom-0">Email</th>
+                                    <th class="border-bottom-0">Role Name</th>
+                                    <th class="border-bottom-0">Created Date</th>
+                                    <th class="border-bottom-0">Status</th>
+                                    <th class="border-bottom-0">Action</th>
+
+                                </tr>
+                            </thead>
+                            @{int rowNo = 0;}
+                            @foreach (var item in Model)
+                            {
+                                string statusClass = "text-danger";
+                                string statusMessage = "Inactive";
+
+                                if (@item.IsActive == true)
+                                {
+                                    statusClass = "text-success";
+                                    statusMessage = "Active";
+                                }
+
+
+
+                                <tr>
+                                    <td>@(rowNo += 1)</td>
+                                    <td>@item.FirstName</td>
+
+                                    <td>@item.MiddleName</td>
+                                    <td>@item.LastName</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.RoleName</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td class="@statusClass">@statusMessage</td>
+                                    <td>
+  <div class="btn-list">
+      <button type="button" class="btn btn-sm btn-primary">
+          
+          <a onclick="Edit('@item.Id')"><span class="fe fe-edit"> </span></a>
+      </button>
+                                            <button type="button" class="btn  btn-sm btn-danger">
+
+                                                <a onclick="ResetPassword('@item.Id')" role='button'><span class="fe fe-refresh-cw"> </span></a>
+
+                                            </button>
+
+
+
+
+
+
+                                        </div>
+                                     
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal item-fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <!-- Modal content -->
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="bodycontentPartial">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    function Create() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+       debugger
+            $.ajax({
+            type: 'GET',
+            url : "@Url.Action("Create", "UserManagement", new { area = "Admin" })",
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+
+     function FileUpload() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+       debugger
+            $.ajax({
+            type: 'GET',
+            url : "@Url.Action("ImportUser", "UserManagement", new { area = "Admin" })",
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+     @*function GetDeleted() {
+        $
+       debugger
+            $.ajax({
+            type: 'GET',
+            url : "@Url.Action("GetDeleted", "MenuIcon", new { area = "Admin" })",
+
+        });
+    }*@
+
+    function Reload() {
+      location.reload(true)
+    }
+
+
+     function Edit(id) {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+              url : "@Url.Action("Edit", "UserManagement", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+                    debugger;
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+
+     function ResetPassword(id) {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+         debugger
+            $.ajax({
+            type: 'GET',
+              url : "@Url.Action("ResetPassword", "UserManagement", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+                    debugger;
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+        }
+
+
+    function Delete(id) {
+
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+            url: "@Url.Action("Delete", "UserManagement", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+         function CloseModal() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").hide();
+    }
+
+
+</script>

@@ -1,0 +1,253 @@
+﻿@model VatFramework.Models.DataObjects.Account.AdminUserSettingViewModel
+@*<link rel="stylesheet" type="text/css" href="~/assets/css/style.css">*@
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">@ViewBag.ModalTitle User Management </h4>
+        @*<button type="button" class="close" onclick="CloseModal()">
+            <i class="bx bx-x"></i>
+        </button>*@
+    </div>
+
+    <section class="input-validation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-content">
+                        <div class="card-body">
+                            <span style="color:red"> @Html.Raw("All field marked as * means required entry")<br /><br /></span>  <form novalidate asp-controller="@ViewBag.ControllerName" asp-action="@ViewBag.PostAction">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-50">
+                                                <label>Email: <span class="danger">*</span> </label>
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        <input type="email" name="Email" asp-for="Email" required class="form-control" data-validation-required-message="This field is required" placeholder="Email Address">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-50">
+                                                <label>First Name: <span class="danger">*</span> </label>
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        <input type="text" name="FirstName" asp-for="FirstName" required class="form-control" data-validation-required-message="This field is required" placeholder="First Name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-50">
+                                                <label>Surname: <span class="danger">*</span> </label>
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        <input type="text" name="LastName" asp-for="LastName" required class="form-control" data-validation-required-message="This field is required" placeholder="Last Name">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group col-md-6 mb-50">
+                                                <label>Middle Name: <span class="danger">*</span> </label>
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        <input type="text" name="MiddleName" asp-for="MiddleName" class="form-control" data-validation-required-message="This field is required" placeholder="Middle Name">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            @if (ViewBag.PostAction == "Create")
+                                            {
+                                                <input type="hidden" name="ID" asp-for="Id" value="0" />
+                                            }
+                                            else
+
+                                            {
+                                                <input type="hidden" name="ID" asp-for="Id" />
+                                            }
+
+
+                                            <div class="form-group col-md-6 mb-50">
+
+                                                <label>Role: <span class="danger">*</span> </label>
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        <select class="form-control" asp-for="RoleId" asp-items="@Model.RoleList" onchange="loadRole()" required data-validation-required-message="This field is required">
+
+                                                            <option value=""> -- Select Role -- </option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @if (Model.LoggedRoleName == VatFramework.Utilities.ExceptionUtility.ResponseErrorMessageUtility.SystemAdministrator)
+                                            {
+                                                <input type="hidden" name="PlantId" asp-for="PlantId" value="1000" />
+                                                <input type="hidden" name="MiniPlantIdd" asp-for="MiniPlantIdd" value="1000" />
+                                            }
+
+                                            else if (Model.LoggedRoleName == VatFramework.Utilities.ExceptionUtility.ResponseErrorMessageUtility.CentralAdmin)
+                                            {
+
+                                                <div id="showPlant" class="form-group col-md-6 mb-50" style="display: none">
+
+                                                    <label>Plant: <span class="danger">*</span> </label>
+                                                    <div class="form-group">
+
+                                                        <div class="controls">
+                                                            <select class="form-control" asp-for="PlantId" asp-items="@Model.PlantList" required data-validation-required-message="This field is required">
+
+                                                                <option value=""> -- Select Plant -- </option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            else if (Model.LoggedRoleName == VatFramework.Utilities.ExceptionUtility.ResponseErrorMessageUtility.PlantAdmin)
+                                            {
+
+                                                <div id="showPlant" class="form-group col-md-6 mb-50" style="display: none">
+
+                                                    <label>Mini Plant: <span class="danger">*</span> </label>
+                                                    <div class="form-group">
+
+                                                        <div class="controls">
+                                                            <select class="form-control" asp-for="PlantId" asp-items="@Model.PlantList" required data-validation-required-message="This field is required">
+
+                                                                <option value=""> -- Select Plant -- </option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            else if (Model.LoggedRoleName == VatFramework.Utilities.ExceptionUtility.ResponseErrorMessageUtility.MiniAdmin)
+                                            {
+
+                                                <div id="showPlant" class="form-group col-md-6 mb-50" style="display: none">
+
+                                                    <label>Mini Plant: <span class="danger">*</span> </label>
+                                                    <div class="form-group">
+
+                                                        <div class="controls">
+                                                            <select class="form-control" asp-for="PlantId" asp-items="@Model.PlantList" required data-validation-required-message="This field is required">
+
+                                                                <option value=""> -- Select Plant -- </option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                
+                                            }
+                                            @if (ViewBag.PostAction != "Create")
+                                            {
+                                                <div class="form-group col-md-6 mb-50">
+
+
+
+                                                    <div class="form-group">
+                                                        <label>Status: <span class="danger">*</span> </label>
+                                                        <div class="controls">
+                                                            <select class="form-control" required name="IsActive" asp-for="IsActive" data-validation-required-message="This field is required">
+                                                                <option value="">Select Status</option>
+                                                                <option value="True">Active</option>
+                                                                <option value="False">InActive</option>
+                                                            </select>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a asp-action="Index" asp-controller="@ViewBag.ControllerName" asp-area="Admin" class="btn btn-danger">Close</a>
+
+                                        <button type="submit" class="btn btn-primary ml-1" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">
+                                            <i class="bx bx-check d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                        </button>
+
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<script type="text/javascript" src="~/js/validatephone.js"></script>
+
+
+<script src="~/app-assets/js/scripts/forms/form-tooltip-valid.js"></script>
+<script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+<script src="~/app-assets/js/scripts/forms/validation/form-validation.js"></script>
+<script src="~/app-assets/js/scripts/modal/components-modal.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#RoleId").change(function () {
+
+            var ProductId = $('#RoleId option:selected').val();
+
+
+
+            $.getJSON("../ProductServiceCommission/GetProductServiceList", { RoleId: RoleId },
+                function (data) {
+                    var select = $("#ProductServiceId");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: "-1",
+                        text: "Select Product Service"
+                    }));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                });
+        });
+    });
+
+
+
+    function loadRole() {
+        debugger
+
+        var x = document.getElementById("showPlant");
+        var RoleId = document.getElementById("RoleId");
+        
+        debugger
+        if (RoleId.value == '@VatFramework.Utilities.ExceptionUtility.ResponseErrorMessageUtility.PlantAdmin'
+            || RoleId.value == '@VatFramework.Utilities.ExceptionUtility.ResponseErrorMessageUtility.MiniAdmin')
+        {
+            x.style.display = "block";
+           
+        }
+        else {
+            x.style.display = "none";          
+        }
+
+    }
+</script>

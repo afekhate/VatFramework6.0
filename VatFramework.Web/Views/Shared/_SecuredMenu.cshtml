@@ -1,0 +1,131 @@
+﻿
+@using Microsoft.AspNet.Identity
+@using VatFramework.Models.DataObjects.Icon
+@using Microsoft.AspNetCore.Http
+@using VatFramework.Web.Filters;
+@using System.Security.Claims;
+@using Newtonsoft.Json;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+
+
+    var sidebarMenus = VatFramework.Web.Filters.SessionExtensions.GetObjectFromJson<List<SidebarMenuViewModel>>(Context.Session, "MenuString");
+
+
+
+}
+
+<!
+<!--/-SIDEBAR-->
+<div class="sticky">
+    <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+    <div class="app-sidebar">
+        <div class="side-header">
+            <a class="header-brand1" href="#">
+                <img src="../frscassets/images/logo-l-w.png" class="header-brand-img desktop-logo" alt="logo">
+                <img src="../frscassets/images/logo-s.png" class="header-brand-img toggle-logo"
+                     alt="logo">
+                <img src="../frscassets/images/logo-s.png" class="header-brand-img light-logo" alt="logo">
+                <img src="../frscassets/images/logo-l.png" class="header-brand-img light-logo1"
+                     alt="logo">
+            </a>
+            <!-- LOGO -->
+        </div>
+
+        <div class="main-sidemenu">
+            <div class="slide-left disabled" id="slide-left">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                </svg>
+            </div>
+
+            @if (sidebarMenus == null || User.Identity.IsAuthenticated == false)
+
+            {
+
+                <script>
+
+                    window.location.replace("account/login");
+
+                    
+                </script>
+            }
+            else
+            {
+        <ul class="side-menu">
+
+           
+
+
+            @foreach (var menu in sidebarMenus)
+            {
+                <li class="slide">
+                    @{
+                        string[] adminUrl;
+                        adminUrl = @menu.Url.Split("/");
+                        string action = adminUrl[1];
+                        string controller = adminUrl[0];
+
+                    }
+
+                    <a class="side-menu__item" data-bs-toggle="slide" asp-action="@action" asp-controller="@controller">
+                        <i class="side-menu__icon fe fe-slack"></i>
+                        <span class="side-menu__label">@menu.MenuText</span><i class="angle fe fe-chevron-right"></i>
+                    </a>
+
+                    @if (menu.SubMenus.Count > 0)
+
+                    {
+                <ul class="slide-menu">
+
+                    @foreach (var subMenu in menu.SubMenus)
+                    {
+
+                        string[] breakURL = subMenu.Url.Split("/");
+
+                        string ControllerName = "";
+                        string ActionName = "";
+
+                        if (breakURL.Length == 0)
+                        {
+
+                        }
+                        else if (breakURL.Length == 1)
+                        {
+                            ControllerName = breakURL[0];
+                        }
+                        else if (breakURL.Length == 2)
+                        {
+                            ControllerName = breakURL[0];
+                            ActionName = breakURL[1];
+                        }
+                        <li><a href="@Url.Action(ActionName, ControllerName)" class="slide-item">@subMenu.PermissionName</a></li>
+                       
+
+                    }
+                </ul>
+
+                    }
+
+                </li>
+                @*<li class="slide">
+                <a href="@Url.Action("LogOff", "Account", new { area = "" })">
+                    <i class="menu-livicon" data-icon="user"></i><span class="menu-title" data-i18n="">Logout</span>
+                </a>
+            </li>*@
+          }
+           
+        </ul>
+            }
+            <div class="slide-right" id="slide-right">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
+                     width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z" />
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</div>

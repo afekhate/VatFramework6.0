@@ -1,0 +1,106 @@
+﻿@model VatFramework.Models.DataObjects.ApplicationRole.ApplicationRoleViewModel
+    @*<link rel="stylesheet" type="text/css" href="~/assets/css/style.css">*@
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">@ViewBag.ModalTitle Role Management </h4>
+        @*<button type="button" class="close" onclick="CloseModal()">
+            <i class="bx bx-x"></i>
+        </button*@>
+    </div>
+
+    <section class="input-validation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                   
+                    <div class="card-content" >
+                        <div class="card-body">
+                            <span style="color:red"> @Html.Raw("All field marked as * means required entry")<br /><br /></span>  <form novalidate asp-controller="@ViewBag.ControllerName" asp-action="@ViewBag.PostAction" enctype="multipart/form-data">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Role Name:  <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+                                                <input type="text" name="RoleName" asp-for="RoleName" required class="form-control" data-validation-required-message="This field is required" placeholder="Role Name">
+                                            </div>
+                                        </div>
+
+                                        <label>Assigned To: <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+                                                @Html.DropDownListFor(x => x.ParentRoleId, (List<SelectListItem>)ViewBag.AdministratorList, "--Please choose one--", new { @class = "form-control", @placeholder = "", @required = "required" })
+                                            </div>
+
+                                        </div>
+
+                                        <label>Role Description: <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+
+                                                @if (ViewBag.PostAction == "Create")
+                                                {
+                                                    <input type="hidden" name="ID" asp-for="ID" value="0" />
+                                                }
+                                                else
+
+                                                {
+                                                    <input type="hidden" name="ID" asp-for="ID" />
+                                                }
+
+                                                <input type="text" rows="2" name="RoleDescription" asp-for="RoleDescription" required class="form-control" data-validation-required-message="This field is required" placeholder="Role Description">
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Status: <span class="danger">*</span> </label>
+                                            <div class="controls">
+                                                <select class="form-control" required name="IsActive" asp-for="IsActive" id="IsActive" data-validation-required-message="This field is required">
+                                                    <option value="">Select Status</option>
+                                                    <option value="True">Active</option>
+                                                    <option value="False">InActive</option>
+                                                </select>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger"  onclick="CloseModal()">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
+                                    <button type="submit" class="btn btn-primary ml-1" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">
+                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+
+
+
+<script src="~/app-assets/js/scripts/forms/form-tooltip-valid.js"></script>
+<script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+<script src="~/app-assets/js/scripts/forms/validation/form-validation.js"></script>
+<script src="~/app-assets/js/scripts/modal/components-modal.js"></script>

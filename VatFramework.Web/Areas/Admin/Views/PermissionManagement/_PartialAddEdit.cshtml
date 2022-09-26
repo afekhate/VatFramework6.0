@@ -1,0 +1,129 @@
+﻿@model VatFramework.Models.DataObjects.Permission.PermissionViewModel
+@*<link rel="stylesheet" type="text/css" href="~/assets/css/style.css">*@
+
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">@ViewBag.ModalTitle Permission Management </h4>
+        @*<button type="button" class="close" onclick="CloseModal()">
+            <i class="bx bx-x"></i>
+        </button>*@
+    </div>
+
+    <section class="input-validation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-content">
+                        <div class="card-body">
+                            <span style="color:red"> @Html.Raw("All field marked as * means required entry")<br /><br /></span>  <form novalidate asp-controller="@ViewBag.ControllerName" asp-action="@ViewBag.PostAction" enctype="multipart/form-data">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+                                            <label>Permission Name (Page Name):  <span class="danger">*</span> </label>
+                                            <div class="controls">
+
+                                                <input type="text" name="PermissionName" asp-for="PermissionName" required class="form-control" data-validation-required-message="This field is required" placeholder="Permission Name">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Permission Tag (Max 10) :  <span class="danger">*</span> </label>
+                                            <div class="controls">
+
+                                                <input type="text" name="PermissionCode" style="text-transform: uppercase"  maxlength="10" asp-for="PermissionCode" id="PermissionCode" required class="form-control" data-validation-required-message="This field is required" placeholder="Example: TA001">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Parent: <span class="danger">*</span> </label>
+                                            <div class="controls">
+                                                <select class="form-control" asp-for="ParentId" asp-items="@Model.ParentMenus" id="ParentId" required data-validation-required-message="This field is required">
+
+                                                    <option value=""> -- Select Parent -- </option>
+                                                    <option value="0">Default As Parent</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Menu Icon: <span class="danger">*</span> </label>
+                                            <div class="controls">
+                                                <select class="form-control" asp-for="Icon" asp-items="@ViewBag.IconList" id="Icon"  required data-validation-required-message="This field is required">
+                                                    <option value="">--None--</option>
+                                                   
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Controller/Action Address <span class="danger">*</span> </label>
+                                            <div class="controls">
+                                                <input type="text" name="Url" asp-for="Url" required class="form-control" data-validation-required-message="This field is required" placeholder="Example: Home/Index">
+                                            </div>
+                                        </div>
+
+
+
+
+                                        @if (ViewBag.PostAction == "Create")
+                                        {
+                                            <input type="hidden" name="ID" asp-for="ID" value="0" />
+                                        }
+                                        else
+
+                                        {
+                                            <input type="hidden" name="ID" asp-for="ID" />
+
+                                        <div class="form-group">
+                                            <label>Status: <span class="danger">*</span> </label>
+                                            <div class="controls">
+                                                <select class="form-control" required name="IsActive" asp-for="IsActive" id="IsActive" data-validation-required-message="This field is required">
+                                                    <option value="" selected>Select Status</option>
+                                                    <option value="True">Active</option>
+                                                    <option value="False">InActive</option>
+                                                </select>
+
+                                            </div>
+
+
+                                        </div>
+                                        }
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <a asp-action="Index" asp-controller="@ViewBag.ControllerName" asp-area="Admin" class="btn btn-danger">Close</a>
+
+                                    <button type="submit" class="btn btn-primary ml-1" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">
+                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+
+
+
+<script src="~/app-assets/js/scripts/forms/form-tooltip-valid.js"></script>
+<script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+<script src="~/app-assets/js/scripts/forms/validation/form-validation.js"></script>
+<script src="~/app-assets/js/scripts/modal/components-modal.js"></script>

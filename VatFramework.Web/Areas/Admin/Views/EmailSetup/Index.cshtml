@@ -1,0 +1,226 @@
+﻿@model IEnumerable<VatFramework.Models.DataObjects.EmailMessaging.EmailTemplateViewModel>
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+@{
+    ViewData["Title"] = ViewBag.ProjectTitle + "::  " + "Email Template Management";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+<style>
+
+    .hover:hover {
+        opacity: 0.9;
+    }
+
+    .item-fade {
+        background: black;
+        opacity: 1;
+    }
+
+    .modal-content {
+        max-height: none;
+        width: 600px;
+    }
+</style>
+<div class="page-header">
+    <h1 class="page-title">Email Template  Management</h1>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Email Template Management Listing</li>
+        </ol>
+    </div>
+</div>
+
+<div class="row row-sm">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="row">
+
+
+                <div class="card-header">
+
+                    <h3 class="card-title">Email Template Management</h3>
+                    <div class="col-md-9 text-end">
+                        <button onclick="Create()" role="button" data-toggle="modal" data-target="#centralModalInfo" class="btn btn-primary float-end">Add New</button>
+
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="file-datatable" class="table table-bordered text-nowrap key-buttons border-bottom">
+                            <thead>
+
+                                <tr>
+
+
+                                    <th class="border-bottom-0">SN</th>
+                                    <th class="border-bottom-0">Subject</th>
+                                    <th class="border-bottom-0">Description</th>
+                                    <th class="border-bottom-0">Created Date</th>
+
+                                    <th class="border-bottom-0">Status</th>
+                                    <th class="border-bottom-0">Action</th>
+
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int rowNo = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    string statusClass = "text-danger";
+                                    string statusMessage = "Inactive";
+
+                                    if (@item.IsActive == true)
+                                    {
+                                        statusClass = "text-success";
+                                        statusMessage = "Active";
+                                    }
+
+                                    else
+                                    {
+                                        statusClass = "text-danger";
+                                        statusMessage = "Deleted";
+                                    }
+
+
+                                    <tr>
+                                        <td>@(rowNo += 1)</td>
+                                        <td>@item.Subject</td>
+
+                                        <td>@Html.Raw(item.Description)</td>
+
+                                        <td>@item.CreatedDate</td>
+                                        <td class="@statusClass">@statusMessage</td>
+                                        <td>
+                                            <div class="btn-list">
+                                                <button type="button" class="btn btn-sm btn-primary">
+                                                  
+                                                    <a asp-action="edit" asp-controller="emailsetup" asp-area="Admin"
+                                                       asp-route-ID="@VatFramework.Web.Models.ExtentionUtility.Encrypt(@item.ID.ToString())" role='button' style="color:white"><span class="fe fe-edit"> </span></a>
+                                                </button>
+                                                <button type="button" class="btn  btn-sm btn-danger">
+                                                    <a onclick="Delete('@item.ID')" role='button'><span class="fe fe-trash-2"> </span></a>
+
+                                                </button>
+
+
+
+
+
+
+                                            </div>
+
+                     
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal item-fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-scrollable modal-dialog-scrollable" role="document">
+        <!-- Modal content -->
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="bodycontentPartial">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    function Create() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+       debugger
+            $.ajax({
+            type: 'GET',
+            url : "@Url.Action("Create", "EmailSetup", new { area = "Admin" })",
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+
+
+    function Reload() {
+      location.reload(true)
+    }
+
+
+    function Edit(id) {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+              url : "@Url.Action("Edit", "EmailSetup", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+                    debugger;
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+        }
+
+
+
+    function Delete(id) {
+
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+            url: "@Url.Action("Delete", "EmailSetup", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+         function CloseModal() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").hide();
+    }
+
+
+</script>

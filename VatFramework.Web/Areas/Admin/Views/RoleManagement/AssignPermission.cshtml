@@ -1,0 +1,242 @@
+﻿@model VatFramework.Models.DataObjects.Permission.ApplicationRolePermissionViewModel
+@{
+    ViewData["Title"] = ViewBag.ProjectTitle + "::  " + "Role Management";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+@*<style>
+    /* Customize the label (the container) */
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        width:100%;
+    }
+
+        /* Hide the browser's default checkbox */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+       .has{
+
+
+           font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+           font-size:15px;
+       }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        idth: 25px;
+        background-color: #eee;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+</style>*@
+
+
+
+    <section class="input-validation">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-content">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+
+                                        <div class="controls">
+                                            <div style="margin-left:8px; margin-top:20px;font-size:10px;">
+                                                <button type="button" class="btn btn btn btn-light-secondary mr-1 mb-1 small">Collapsed</button>
+                                                <button type="button" class="btn btn btn btn-light-secondary mr-1 mb-1">Expanded</button>
+                                                <button type="button" class="btn btn btn-light-secondary mr-1 mb-1">Checked All</button>
+                                                <button type="button" class="btn btn btn-light-secondary mr-1 mb-1">Uncheck All</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+
+                                        <div class="col-sm-12" style="margin-top:10px; border:1px solid #cccccc;">
+                                            <ul class="mytree">
+                                                @Html.Raw(Model.UnorderedList)
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a asp-action="Index" asp-controller="@ViewBag.ControllerName" asp-area="Admin" class="btn btn-danger">Close</a>
+
+                                @*<button type="submit" class="btn btn-primary ml-1" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit(); onclick=" AssignPermission()"">
+                                    <i class="bx bx-check d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                </button>*@
+                                <button type="submit" class="btn btn-primary ml-1" onclick="AssignPermission()">
+                                    <i class="bx bx-check d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+<script>
+
+         $(document).ready(function (e) {
+
+              $('.mytree ul').fadeOut();
+
+        });
+
+        $(document).on('click', '.mytree label', function (e) {
+            $(this).next('ul').fadeToggle();
+            e.stopPropagation();
+        });
+
+        $(document).on('change', '.mytree input[type=checkbox]', function (e) {
+            $(this).siblings('ul').find("input[type='checkbox']").prop('checked', this.checked);
+            $(this).parentsUntil('.mytree').children("input[type='checkbox']").prop('checked', this.checked);
+            e.stopPropagation();
+        });
+
+        $(document).on('click', 'button', function (e) {
+            switch ($(this).text()) {
+                case 'Collapsed':
+                    $('.mytree ul').fadeOut();
+                    break;
+                case 'Expanded':
+                    $('.mytree ul').fadeIn();
+                    break;
+                case 'Checked All':
+                    $(".mytree input[type='checkbox']").prop('checked', true);
+                    break;
+                case 'Uncheck All':
+                    $(".mytree input[type='checkbox']").prop('checked', false);
+                    break;
+                default:
+            }
+        });
+
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
+
+        function AssignPermission() {
+
+            var checkedValues = $('input:checkbox:checked').map(function () {
+                return this.id;
+            }).get();
+
+            $body = $("body");
+            $(document).on({
+                ajaxStart: function () { $body.addClass("loading"); },
+                ajaxStop: function () { }
+            });
+
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Update", "RoleManagement", new { area = "Admin" })",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data: {
+                    RoleId: '@Model.Id',
+                    roles: checkedValues
+                },
+                 success: function (content) {
+                     debugger
+                    $("#inlineForm").show();
+
+                     alert("Your request was saved")
+                     // this a short cut to red
+                     window.location.replace("");
+                }
+            });
+        }
+
+    function CloseModal() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").hide();
+    }
+</script>
+
+
+<script src="~/app-assets/js/scripts/forms/form-tooltip-valid.js"></script>
+<script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+<script src="~/app-assets/js/scripts/forms/validation/form-validation.js"></script>
+<script src="~/app-assets/js/scripts/modal/components-modal.js"></script>

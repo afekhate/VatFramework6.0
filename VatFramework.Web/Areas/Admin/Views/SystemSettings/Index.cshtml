@@ -1,0 +1,241 @@
+﻿@model IEnumerable<VatFramework.Models.DataObjects.Settings.SystemSettingViewModel>
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = ViewBag.ProjectTitle + "::  " + "System Settings Management";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+<style>
+
+    .hover:hover {
+        opacity: 0.9;
+    }
+
+    .item-fade {
+        background: black;
+        opacity: 1;
+    }
+
+    .modal-content {
+        max-height: none;
+        width: 600px;
+    }
+</style>
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <h1 class="page-title">System Settings Management</h1>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">System Settings Management Listing</li>
+        </ol>
+    </div>
+</div>
+
+
+<!-- Info table about action starts -->
+<div class="row row-sm">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="row">
+
+
+                <div class="card-header">
+
+                    <h3 class="card-title">State Management</h3>
+
+                    @if (Configuration["Mode"] == "Development")
+                    {
+                        
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+
+                                <li>
+
+
+                                    <button onclick="Create()" role="button" data-toggle="modal" data-target="#centralModalInfo" class="btn btn-primary ml-1 btn btn-light-primary mr-0 my-1 my-sm-0 mr-sm-1">Add New</button>
+                                </li>
+
+                            </ul>
+                        </div>
+                    }
+                    <div class="col-md-10 text-end">
+
+                        <button onclick="Create()" role="button" data-toggle="modal" data-target="#centralModalInfo" class="btn btn-primary float-end">Add New</button>
+
+
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="file-datatable" class="table table-bordered text-nowrap key-buttons border-bottom">
+                            <thead>
+                                <tr>
+                                    <th class="border-bottom-0">SN</th>
+                                    <th class="border-bottom-0">Look Up Code</th>
+                                    <th class="border-bottom-0">Item Name</th>
+
+                                    <th class="border-bottom-0">Item Value</th>
+                                    <th class="border-bottom-0">Action</th>
+
+                                </tr>
+                            </thead>
+                            @{int rowNo = 0;}
+                            @foreach (var item in Model)
+                            {
+                                string statusClass = "text-danger";
+                                string statusMessage = "Inactive";
+
+                                if (@item.IsActive == true)
+                                {
+                                    statusClass = "text-success";
+                                    statusMessage = "Active";
+                                }
+
+
+
+                                <tr>
+                                    <td>@(rowNo += 1)</td>
+                                    <td>@item.LookUpCode</td>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.ItemValue</td>
+
+
+
+                                    <td>
+                                        <div class="btn-list">
+                                            <button type="button" class="btn btn-sm btn-primary">
+                                                <a onclick="Edit('@item.ID')"><span class="fe fe-edit"> </span></a>
+
+                                            </button>
+                                    
+                                            @if (Configuration["Mode"] == "Development")
+                                            {
+                                        <button type="button" class="btn  btn-sm btn-danger">
+                                            <a onclick="Delete('@item.ID')" role='button'><span class="fe fe-trash-2"> </span></a>
+
+                                        </button>
+                                            }
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                            }
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal item-fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <!-- Modal content -->
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="bodycontentPartial">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    function Create() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+       debugger
+        $.ajax({
+            type: 'GET',
+            url : "@Url.Action("Create", "SystemSettings", new { area = "Admin" })",
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+
+     @*function GetDeleted() {
+        $
+       debugger
+            $.ajax({
+            type: 'GET',
+            url : "@Url.Action("GetDeleted", "countrymanagement", new { area = "Admin" })",
+
+        });
+    }*@
+
+    function Reload() {
+      location.reload(true)
+    }
+
+
+    function Edit(id) {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+        $.ajax({
+            type: 'GET',
+            url : "@Url.Action("Edit", "SystemSettings", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+                    debugger;
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+
+
+    function Delete(id) {
+
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+            url: "@Url.Action("Delete", "SystemSettings", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+            });
+    }
+
+    function CloseModal() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").hide();
+    }
+
+
+</script>
+

@@ -1,0 +1,259 @@
+﻿@model IEnumerable<VatFramework.Models.DataObjects.ApplicationRole.ApplicationRoleViewModel>
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+@{
+    ViewData["Title"] = ViewBag.ProjectTitle + "::  " + "Role Management";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+@*<style>
+
+    .hover:hover {
+        opacity: 0.9;
+    }
+
+    .item-fade {
+        background: black;
+        opacity: 1;
+    }
+
+    .modal-content {
+        max-height: none;
+        width: 600px;
+    }
+</style>*@
+
+
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <h1 class="page-title">Role Management</h1>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Role Management</li>
+        </ol>
+    </div>
+
+</div>
+
+
+<!-- Info table about action starts -->
+<!-- Row -->
+<div class="row row-sm">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="row">
+               
+                
+                <div class="card-header">
+
+                    <h3 class="card-title">Role Management</h3>
+                    <div class="col-md-10 text-end">
+
+                        <button onclick="Create()" role="button" data-toggle="modal" data-target="#centralModalInfo" class="btn btn-primary float-end">Add New</button>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="file-datatable" class="table table-bordered text-nowrap key-buttons border-bottom">
+                            <thead>
+
+                                <tr>
+
+
+                                    <th class="border-bottom-0">SN</th>
+                                    <th class="border-bottom-0">Role Name</th>
+                                    <th class="border-bottom-0">Role Description</th>
+                                    <th class="border-bottom-0">Created Date</th>
+                                    <th class="border-bottom-0">Status</th>
+                                    <th class="border-bottom-0">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int rowNo = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    string statusClass = "text-danger";
+                                    string statusMessage = "Inactive";
+
+                                    if (@item.IsActive == true)
+                                    {
+                                        statusClass = "text-success";
+                                        statusMessage = "Active";
+                                    }
+                                    <tr>
+                                        <td>@(rowNo += 1)</td>
+                                        <td>@item.RoleName.ToUpper()</td>
+                                        <td>@item.RoleDescription</td>
+
+                                        <td>@item.CreatedDate</td>
+                                        <td class="@statusClass">@statusMessage</td>
+                                        <td>
+                                            <div class="btn-list">
+                                                <button type="button" class="btn btn-sm btn-primary">
+                                                    <a onclick="Edit('@item.ID')"><span class="fe fe-edit"> </span></a>
+
+                                                </button>
+                                                <button type="button" class="btn  btn-sm btn-danger">
+                                                    <a onclick="Delete('@item.ID')" role='button'><span class="fe fe-trash-2"> </span></a>
+
+                                                </button>
+                                                
+
+                                                @*<a class="btn btn-primary" asp-action="AssignPermission" asp-controller="@ViewBag.ControllerName" asp-route-ID="@item.ID" style="color:white"><span class="fe fe-check-circle"> </span>here</a>*@
+                                         
+
+                                                <a class="btn btn-success" href="@Url.Action("AssignPermission","RoleManagement", new {ID = @item.ID})"><span class="fe fe-check-circle"> </span></a>
+
+
+
+                                            </div>
+
+
+
+                                        </td>
+                                    </tr>
+                                }
+
+
+
+
+
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Role Name</th>
+                                    <th>Role Description</th>
+                                    <th>Created Date</th>
+                                    <th>Status</th>
+
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="modal item-fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <!-- Modal content -->
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="bodycontentPartial">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    function Create() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+       debugger
+            $.ajax({
+            type: 'GET',
+            url : "@Url.Action("Create", "RoleManagement", new { area = "Admin" })",
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+
+     @*function GetDeleted() {
+        $
+       debugger
+            $.ajax({
+            type: 'GET',
+            url : "@Url.Action("GetDeleted", "MenuIcon", new { area = "Admin" })",
+
+        });
+    }*@
+
+    function Reload() {
+      location.reload(true)
+    }
+
+
+     function Edit(id) {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+              url : "@Url.Action("Edit", "RoleManagement", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+                    debugger;
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+        }
+    function AssignPermission(id) {
+        debugger
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+              url : "@Url.Action("AssignPermission", "RoleManagement", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+                      $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+        }
+
+
+
+    function Delete(id) {
+
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").show();
+
+            $.ajax({
+            type: 'GET',
+            url: "@Url.Action("Delete", "RoleManagement", new { area = "Admin" })",
+            data: { id: id },
+                success: function (content) {
+
+                    $("#inlineForm").show();
+                    console.log(content);
+                    $("#bodycontentPartial").html(content);
+
+                }
+        });
+    }
+
+         function CloseModal() {
+        $("#inlineForm").hide();
+        $("#bodycontentPartial").hide();
+    }
+
+
+</script>

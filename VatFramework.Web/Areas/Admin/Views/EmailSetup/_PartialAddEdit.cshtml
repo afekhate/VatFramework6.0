@@ -1,0 +1,128 @@
+﻿@model VatFramework.Models.DataObjects.EmailMessaging.EmailTemplateViewModel
+
+
+@{
+    ViewData["Title"] = ViewBag.ProjectTitle + "::  " + "Email Template Management";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+
+<div class="content-body">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">@ViewBag.ModalTitle Email Template </h4>
+        <button type="button" class="close" onclick="CloseModal()">
+            <i class="bx bx-x"></i>
+        </button>
+    </div>
+    <section class="input-validation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-content">
+                        <div class="card-body">
+                             <span style="color:red"> @Html.Raw("All field marked as * means required entry")<br /><br /></span>  <form novalidate asp-controller="@ViewBag.ControllerName" asp-action="@ViewBag.PostAction">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-50">
+                                                <label>Subject Code*: <span class="danger">*</span> </label>
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        <input type="text" name="Code" asp-for="Code" max="10" required class="form-control" data-validation-required-message="This field is required" placeholder="Subject Code">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-50">
+                                                <label>Subject: <span class="danger">*</span> </label>
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+
+                                                        <input type="text" name="Subject" asp-for="Subject" required class="form-control" data-validation-required-message="This field is required" placeholder="Subject">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-50">
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                       
+                                                        <input type="text" name="Description" asp-for="Description" required class="form-control" data-validation-required-message="This field is required" placeholder="Description">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            @if (ViewBag.PostAction == "Create")
+                                                {
+                                            <input type="hidden" name="ID" asp-for="ID" value="0" />
+                                                }
+                                                else
+
+                                                {
+
+                                            <input type="hidden" name="ID" asp-for="ID" value="@Model.ID" />
+                                                }
+
+
+                                        </div>
+
+                                            <label>MailBody: <span class="danger">*</span> </label>
+                                            <div class="form-group">
+
+                                                <div class="controls">
+                                                    <textarea id="MailBody" asp-for="MailBody" name="MailBody" required class="form-control" data-validation-required-message="This field is required"></textarea>
+                                                    <script>CKEDITOR.replace("MailBody");</script>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                              
+                                    <div class="modal-footer">
+                                        <a asp-action="Index" asp-controller="@ViewBag.ControllerName" asp-area="Admin" class="btn btn-danger">Close</a>
+
+                                        <button type="submit" class="btn btn-primary ml-1" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">
+                                            <i class="bx bx-check d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                        </button>
+
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<script type="text/javascript" src="~/js/validatephone.js"></script>
+
+
+<script src="~/app-assets/js/scripts/forms/form-tooltip-valid.js"></script>
+<script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+<script src="~/app-assets/js/scripts/forms/validation/form-validation.js"></script>
+<script src="~/app-assets/js/scripts/modal/components-modal.js"></script>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(document).ready(function () {
+            $("#RoleId").change(function () {
+                $("#showAgency").hide();
+                if ($(this).val() == "68a1511c-0b83-4fa8-ba16-08fdb8d2e876") {
+
+
+                    $("#showAgency").show();
+                }
+
+            });
+        });
+    });
+</script>

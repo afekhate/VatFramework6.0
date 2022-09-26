@@ -1,0 +1,74 @@
+﻿@model VatFramework.Models.DataObjects.Account.LoginDTO
+
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+
+<!-- PAGE -->
+<div class="page">
+    <div class="">
+
+        <!-- CONTAINER OPEN -->
+        <div class="col col-login mx-auto mt-7">
+            <div class="text-center">
+                @*<img src="~/frscassets/images/logo2.png" />*@
+             
+            </div>
+        </div>
+
+        <div class="container-login100">
+            <div class="wrap-login100 p-6">
+                <form class="login100-form validate-form" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" novalidate>
+
+                    <span class="login100-form-title pb-5">
+                        Login
+                    </span>
+
+
+                    <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-email text-muted" aria-hidden="true"></i>
+                        </a>
+                        <input type="email" asp-for="username" class="input100 border-start-0 form-control ms-0" id="username" name="username" placeholder="Email address">
+                        <span asp-validation-for="username" class="text-danger"></span>
+
+                    </div>
+                    <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-lock text-muted" aria-hidden="true"></i>
+                        </a>
+
+
+                        <input type="password" class="input100 border-start-0 form-control ms-0"  id="password" asp-for="password" placeholder="Password">
+                        <span asp-validation-for="password" class="text-danger"></span>
+                    </div>
+                    <div class="text-end pt-4">
+                        <p class="mb-0">
+                            <a class="text-primary ms-1" asp-controller="account" asp-action="forgetpassword">Forgot Password?</a>
+
+                        </p>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        @*<a href="#" class="login100-form-btn btn-primary">
+                        Login
+                    </a>*@
+
+                        <button type="submit" class="login100-form-btn btn-primary">Log In</button>
+                    </div>
+
+
+
+
+
+
+                </form>
+            </div>
+        </div>
+        <!-- CONTAINER CLOSED -->
+    </div>
+</div>
+<!-- End PAGE -->

@@ -1,0 +1,114 @@
+﻿@using VatFramework.Models.DataObjects.MessageObject
+@model EmailViewModel
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">@ViewBag.ModalTitle Email Credential </h4>
+        @*<button type="button" class="close" onclick="CloseModal()">
+            <i class="bx bx-x"></i>
+        </button>*@
+    </div>
+
+    <section class="input-validation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                   
+                    <div class="card-content" >
+                        <div class="card-body">
+                            <span style="color:red"> @Html.Raw("All field marked as * means required entry")<br /><br /></span>  
+                            <form novalidate asp-controller="@ViewBag.ControllerName" asp-action="@ViewBag.PostAction" enctype="multipart/form-data">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Host Name: <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+                                                <input type="text" name="HostName" asp-for="HostName" required class="form-control" data-validation-required-message="This field is required" placeholder="post.outlook.com">
+                                            </div>
+                                        </div>
+
+                                        <label>Port Number: <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+                                                <input type="number" name="Port" asp-for="Port" required class="form-control" data-validation-required-message="This field is required" placeholder="Port Number" min="0" max="999">
+                                            </div>
+                                        </div>
+
+
+                                        <label>Ssl: <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+                                                <select name="ssl" asp-for="Ssl">
+                                                    <option value="true">True</option>
+                                                    <option value="false">False</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <label>Email Address: <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+                                                <input type="email" name="EmailAddress" asp-for="EmailAddress" required class="form-control" data-validation-required-message="This field is required" placeholder="example@outlook.com">
+                                            </div>
+                                        </div>
+
+
+
+                                        <label>Password: <span class="danger">*</span> </label>
+                                        <div class="form-group">
+
+                                            <div class="controls">
+                                                <input type="text" name="Password" asp-for="Password" required class="form-control" data-validation-required-message="This field is required" placeholder="Email password">
+                                            </div>
+                                        </div>
+
+                                        @if (ViewBag.PostAction == "Create")
+                                        {
+                                            <input type="hidden" name="ID" asp-for="ID" value="0" />
+                                        }
+                                        else
+
+                                        {
+                                            <input type="hidden" name="ID" asp-for="ID" />
+                                        }
+
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger"  onclick="CloseModal()">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
+                                    <button type="submit" class="btn btn-primary ml-1" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">
+                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+
+
+
+<script src="~/app-assets/js/scripts/forms/form-tooltip-valid.js"></script>
+<script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+<script src="~/app-assets/js/scripts/forms/validation/form-validation.js"></script>
+<script src="~/app-assets/js/scripts/modal/components-modal.js"></script>

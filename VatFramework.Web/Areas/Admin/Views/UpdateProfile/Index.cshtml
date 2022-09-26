@@ -1,0 +1,149 @@
+﻿@model VatFramework.Models.DataObjects.Account.AdminUserSettingViewModel
+
+@{
+    ViewData["Title"] = "Update Profile";
+    Layout = "~/Views/Shared/_Secured.cshtml";
+}
+
+
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <h1 class="page-title">Profile</h1>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Update Profile</li>
+        </ol>
+    </div>
+</div>
+<div class="row" id="user-profile">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="wideget-user mb-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="row">
+                                <div class="panel profile-cover">
+                                    <div class="profile-cover__action bg-img"></div>
+                                    <div class="profile-cover__img">
+                                        <div class="profile-img-1">
+                                            <img src="../frscassets/images/21.jpg" alt="img">
+                                        </div>
+                                        <div class="profile-img-content text-dark text-start">
+                                            <div class="text-dark">
+                                                <h3 class="h3 mb-2">@Model.FirstName  @Model.LastName </h3>
+                                                <h5 class="text-muted">@Model.Email</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="">
+                                    <div class="social social-profile-buttons mt-5 float-end">
+                                        <div class="mt-3">
+                                            <a class="social-icon text-primary" href="https://www.facebook.com/" target="_blank"></a>
+                                            <a class="social-icon text-primary" href="https://twitter.com/" target="_blank"></a>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+    </div>
+        <!-- PAGE-HEADER END -->
+        <!-- Info table about action starts -->
+        <section class="input-validation">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+
+                        <div class="card-content">
+                            <div class="card-body">
+                                <span style="color:red"> @Html.Raw("All field marked as * means required entry")<br /><br /></span>  <form novalidate asp-controller="@ViewBag.ControllerName" asp-action="Update">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <label>Email: <span class="danger">*</span> </label>
+                                            <div class="form-group">
+
+                                                <div class="controls">
+                                                    <input type="email" name="Email" asp-for="Email" required class="form-control" readonly data-validation-required-message="This field is required" placeholder="Email Address">
+                                                </div>
+                                            </div>
+                                            <label>First Name: <span class="danger">*</span> </label>
+                                            <div class="form-group">
+
+                                                <div class="controls">
+                                                    <input type="text" name="FirstName" asp-for="FirstName" required class="form-control" data-validation-required-message="This field is required" placeholder="First Name">
+                                                </div>
+                                            </div>
+
+                                            <label>Surname: <span class="danger">*</span> </label>
+                                            <div class="form-group">
+
+                                                <div class="controls">
+                                                    <input type="text" name="LastName" asp-for="LastName" required class="form-control" data-validation-required-message="This field is required" placeholder="Last Name">
+                                                </div>
+                                            </div>
+
+                                            <label>Middle Name: <span class="danger">*</span> </label>
+                                            <div class="form-group">
+
+                                                <div class="controls">
+                                                    <input type="text" name="MiddleName" asp-for="MiddleName" class="form-control" data-validation-required-message="This field is required" placeholder="Middle Name">
+                                                </div>
+                                            </div>
+
+
+                                            <label>Mobile Number: <span class="danger">*</span> </label>
+                                            <div class="form-group">
+
+                                                <div class="controls">
+                                                    <input type="tel" name="MobileNumber" asp-for="MobileNumber" required class="form-control" data-validation-required-message="This field is required" placeholder="Mobile Number">
+                                                </div><div id="error"></div>
+                                            </div>
+
+                                            <input type="hidden" name="ID" asp-for="Id" />
+                                            <input type="hidden" name="RoleId" asp-for="RoleId" id="RoleId" value="@Model.RoleId" />
+
+                                            <input type="hidden" name="LGAId" id="LGAId"  value="1"/>
+
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="modal-footer">
+                                        <a class="btn btn-danger" asp-controller="Dashboard" asp-action="Index">
+                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Close</span>
+                                        </a>
+                                        <button type="submit" class="btn btn-primary ml-1" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">
+                                            <i class="bx bx-check d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">@ViewBag.ButtonAction</span>
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
